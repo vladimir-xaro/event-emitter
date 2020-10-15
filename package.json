@@ -1,5 +1,5 @@
 {
-  "name": "event-emitter",
+  "name": "@xaro/event-emitter",
   "version": "1.0.0",
   "description": "",
   "main": "src/EventEmitter.ts",
