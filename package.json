@@ -1,0 +1,33 @@
+{
+  "name": "event-emitter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/EventEmitter.ts",
+  "scripts": {
+    "watch":      "cross-env NODE_ENV=development webpack --watch --config webpack/webpack.dev.js",
+    "build":      "cross-env NODE_ENV=development webpack --config webpack/webpack.dev.js",
+    "watch:prod": "cross-env NODE_ENV=production webpack --watch --config webpack/webpack.prod.js",
+    "build:prod": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vladimir-xaro/event-emitter.git"
+  },
+  "keywords": [],
+  "author": "Vladimir Slavgorodskiy <vladimir-xaro@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vladimir-xaro/event-emitter/issues"
+  },
+  "homepage": "https://github.com/vladimir-xaro/event-emitter#readme",
+  "devDependencies": {
+    "@types/webpack-env": "^1.15.3",
+    "cross-env": "^7.0.2",
+    "terser-webpack-plugin": "^5.0.0",
+    "ts-loader": "^8.0.5",
+    "typescript": "^4.0.3",
+    "webpack": "^5.1.2",
+    "webpack-cli": "^4.0.0",
+    "webpack-merge": "^5.2.0"
+  }
+}
