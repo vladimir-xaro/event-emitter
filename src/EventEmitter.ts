@@ -64,12 +64,12 @@ export default class EventEmitter implements IEventEmitter {
   }
 
 
-  emit(key: string, data: any): void {
+  emit(key: string, ...args: any): void {
     const event = this.events[key];
 
     if (event) {
       for (let cb of event) {
-        cb(data);
+        cb(args);
       }
     }
   }
