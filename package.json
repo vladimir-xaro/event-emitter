@@ -1,11 +1,11 @@
 {
   "name": "@xaro/event-emitter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "src/EventEmitter.ts",
   "scripts": {
-    "watch":      "cross-env NODE_ENV=development webpack --watch --config webpack/webpack.dev.js",
-    "build":      "cross-env NODE_ENV=development webpack --config webpack/webpack.dev.js",
+    "watch": "cross-env NODE_ENV=development webpack --watch --config webpack/webpack.dev.js",
+    "build": "cross-env NODE_ENV=development webpack --config webpack/webpack.dev.js",
     "watch:prod": "cross-env NODE_ENV=production webpack --watch --config webpack/webpack.prod.js",
     "build:prod": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.js"
   },
