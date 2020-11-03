@@ -12,7 +12,7 @@ $ npm install @xaro/event-emitter
 ```ts
 import EventEmitter from '@xaro/event-emitter';
 
-const emitter = new  EventEmitter();
+const emitter = new EventEmitter();
 const disposeObj = emitter.subscribe('event', args  => {
 	console.log(`${args[0]} ${args[1]}`);
 });
@@ -52,6 +52,42 @@ Result:
 ```
 It's work
 ```
+
+## Interfaces
+You can import these interfaces and extend them as needed.
+
+*types.d.ts*
+```ts
+export interface I_EventEmitter {
+  events: I_EventEmitterEvents;
+
+  subscribe(key: string, cb: Function): { dispose: Function };
+  unsubscribe(key: string): void;
+  removeListener(key: string, cb: Function): void;
+  once(key: string, cb: Function): void;
+  has(key: string): boolean;
+  emit(key: string, data: any): void;
+}
+
+export interface I_EventEmitterConstructorConfig {
+  [key: string]: Function;
+}
+
+export interface I_EventEmitterEvents {
+  [key: string]: Function[];
+}
+```
+*your_file.ts*
+```ts
+import EventEmitter, {
+  I_EventEmitter,
+  I_EventEmitterEvents,
+  I_EventEmitterConstructorConfig
+} from "@xaro/event-emitter";
+
+/** */
+```
+
 
 ## Methods
 #### subscribe(key: string, cb: Function): { dispose: Function };
