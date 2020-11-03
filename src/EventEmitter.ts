@@ -20,7 +20,7 @@ export default class EventEmitter implements I_EventEmitter {
 
 
   /** subscribe on event by key */
-  subscribe(key: string, cb: Function): { dispose: Function } {
+  subscribe(key: string, cb: (...args) => any): { dispose: (...args) => any } {
     if (!this.events[key]) {
       this.events[key] = [];
     }
@@ -40,7 +40,7 @@ export default class EventEmitter implements I_EventEmitter {
   }
 
 
-  removeListener(key: string, cb: Function): void {
+  removeListener(key: string, cb: (...args) => any): void {
     // if (typeof this.events[key] === 'object') {
     if (Array.isArray(this.events[key])) {
       const idx = this.events[key].indexOf(cb);
@@ -51,7 +51,7 @@ export default class EventEmitter implements I_EventEmitter {
     }
   }
 
-  once(key: string, cb: Function): void {
+  once(key: string, cb: (...args) => any): void {
     const remove = this.subscribe(key, (data) => {
       remove.dispose();
       cb(data);
