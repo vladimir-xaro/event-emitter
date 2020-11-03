@@ -2,7 +2,12 @@
   "name": "@xaro/event-emitter",
   "version": "1.0.1",
   "description": "",
-  "main": "src/EventEmitter.ts",
+  "main": "./src/index.ts",
+  "types": "./src/types.d.ts",
+  "files": [
+    "/src",
+    "/build"
+  ],
   "scripts": {
     "watch": "cross-env NODE_ENV=development webpack --watch --config webpack/webpack.dev.js",
     "build": "cross-env NODE_ENV=development webpack --config webpack/webpack.dev.js",
@@ -14,7 +19,7 @@
     "url": "git+https://github.com/vladimir-xaro/event-emitter.git"
   },
   "keywords": [],
-  "author": "Vladimir Slavgorodskiy <vladimir-xaro@gmail.com>",
+  "author": "Vladimir Slavgorodskiy <vladimir.xaro@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/vladimir-xaro/event-emitter/issues"

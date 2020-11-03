@@ -1,6 +1,9 @@
 .DS_Store
 
+/build
 /node_modules
 /webpack
 
 package-lock.json
+tsconfig.json
+tsconfig.json.default

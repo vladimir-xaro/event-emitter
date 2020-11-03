@@ -1,5 +1,5 @@
-export default interface IEventEmitter {
-  events: IEventEmitterEvents;
+export interface I_EventEmitter {
+  events: I_EventEmitterEvents;
 
   subscribe(key: string, cb: Function): { dispose: Function };
   unsubscribe(key: string): void;
@@ -9,10 +9,10 @@ export default interface IEventEmitter {
   emit(key: string, data: any): void;
 }
 
-export interface IEventEmitterConstructorConfig {
+export interface I_EventEmitterConstructorConfig {
   [key: string]: Function;
 }
 
-export interface IEventEmitterEvents {
+export interface I_EventEmitterEvents {
   [key: string]: Function[];
 }

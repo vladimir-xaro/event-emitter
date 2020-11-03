@@ -1,5 +1,9 @@
 import EventEmitter from "./EventEmitter";
 
-(window as any).EventEmitter = EventEmitter;
-
 export default EventEmitter;
+
+export {
+  I_EventEmitter,
+  I_EventEmitterEvents,
+  I_EventEmitterConstructorConfig
+} from "./types";

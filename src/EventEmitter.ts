@@ -1,18 +1,18 @@
-import IEventEmitter, { IEventEmitterConstructorConfig, IEventEmitterEvents } from './IEventEmitter';
+import { I_EventEmitter, I_EventEmitterConstructorConfig, I_EventEmitterEvents } from './types';
 
-export default class EventEmitter implements IEventEmitter {
+export default class EventEmitter implements I_EventEmitter {
   /**
    * Event list
    * @type IEventEmitterEvents
    */
-  events: IEventEmitterEvents = {};
+  events: I_EventEmitterEvents = {};
 
 
   /**
    * Create Emitter
    * @param {Object} config Configuration object
    */
-  constructor(on: IEventEmitterConstructorConfig = {}) {
+  constructor(on: I_EventEmitterConstructorConfig = {}) {
     for (let key in on) {
       this.subscribe(key, on[key]);
     }
