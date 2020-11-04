@@ -105,7 +105,7 @@ export interface I_EventEmitter {
 }
 
 export interface I_EventEmitterConstructorConfig {
-	[key: string]: T_Func | T_Func[];
+	[key: string]: T_Func | T_Func[] | undefined;
 }
 
 export interface I_EventEmitterEvents {

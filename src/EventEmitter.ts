@@ -14,7 +14,9 @@ export default class EventEmitter implements I_EventEmitter {
    */
   constructor(on: I_EventEmitterConstructorConfig = {}) {
     for (let key in on) {
-      this.multipleSubsribe(key, on[key])
+      if (on[key]) {
+        this.multipleSubsribe(key, on[key] as T_Func | T_Func[])
+      }
     }
   }
 
