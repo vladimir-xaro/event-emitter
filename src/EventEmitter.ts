@@ -81,7 +81,7 @@ export default class EventEmitter implements I_EventEmitter {
 
     if (event) {
       for (let cb of event) {
-        cb(args);
+        cb(args.length > 1 ? args : args[0]);
       }
     }
   }
