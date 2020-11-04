@@ -13,7 +13,7 @@ $ npm install @xaro/event-emitter
 import EventEmitter from '@xaro/event-emitter';
 
 const emitter = new EventEmitter();
-const disposeObj = emitter.subscribe('event', args  => {
+const disposeObj = emitter.subscribe('event', args => {
 	console.log(`${args[0]} ${args[1]}`);
 });
 emitter.emit('event', 'Hello,', 'World');
@@ -94,22 +94,22 @@ You can import these interfaces and extend them as needed.
 *types.d.ts*
 ```ts
 export interface I_EventEmitter {
-  events: I_EventEmitterEvents;
+	events: I_EventEmitterEvents;
 
-  subscribe(key: string, cb: T_Func): { dispose: T_Func };
-  unsubscribe(key: string): void;
-  removeListener(key: string, cb: T_Func): void;
-  once(key: string, cb: T_Func): void;
-  has(key: string): boolean;
-  emit(key: string, data: any): void;
+	subscribe(key: string, cb: T_Func): { dispose: T_Func };
+	unsubscribe(key: string): void;
+	removeListener(key: string, cb: T_Func): void;
+	once(key: string, cb: T_Func): void;
+	has(key: string): boolean;
+	emit(key: string, data: any): void;
 }
 
 export interface I_EventEmitterConstructorConfig {
-  [key: string]: T_Func | T_Func[];
+	[key: string]: T_Func | T_Func[];
 }
 
 export interface I_EventEmitterEvents {
-  [key: string]: T_Func[];
+	[key: string]: T_Func[];
 }
 
 export type T_Func = (...args: any) => any
@@ -117,8 +117,8 @@ export type T_Func = (...args: any) => any
 *your_file.ts*
 ```ts
 import EventEmitter, {
-  I_EventEmitter,
-  I_EventEmitterEvents,
+	I_EventEmitter,
+	I_EventEmitterEvents,
 	I_EventEmitterConstructorConfig,
 	T_Func
 } from "@xaro/event-emitter";
