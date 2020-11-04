@@ -53,7 +53,42 @@ Result:
 It's work
 ```
 
-## Interfaces
+Also you can pass callbacks in array:
+```ts
+import EventEmitter from '@xaro/event-emitter';
+
+const emitter = new EventEmitter({
+	on: {
+		event1: [
+			() => {
+				console.log('event1 - cb #0')
+			},
+			() => {
+				console.log('event1 - cb #1')
+			},
+			() => {
+				console.log('event1 - cb #2')
+			}
+		],
+		event2: () => {
+			console.log('event2 - cb #0')
+		}
+	}
+});
+
+emitter.emit('event1');
+emitter.emit('event2');
+```
+Result:
+```
+event1 - cb #0
+event1 - cb #1
+event1 - cb #2
+event2 - cb #0
+```
+
+
+## Interfaces & Types
 You can import these interfaces and extend them as needed.
 
 *types.d.ts*
@@ -61,28 +96,31 @@ You can import these interfaces and extend them as needed.
 export interface I_EventEmitter {
   events: I_EventEmitterEvents;
 
-  subscribe(key: string, cb: Function): { dispose: Function };
+  subscribe(key: string, cb: T_Func): { dispose: T_Func };
   unsubscribe(key: string): void;
-  removeListener(key: string, cb: Function): void;
-  once(key: string, cb: Function): void;
+  removeListener(key: string, cb: T_Func): void;
+  once(key: string, cb: T_Func): void;
   has(key: string): boolean;
   emit(key: string, data: any): void;
 }
 
 export interface I_EventEmitterConstructorConfig {
-  [key: string]: Function;
+  [key: string]: T_Func | T_Func[];
 }
 
 export interface I_EventEmitterEvents {
-  [key: string]: Function[];
+  [key: string]: T_Func[];
 }
+
+export type T_Func = (...args: any) => any
 ```
 *your_file.ts*
 ```ts
 import EventEmitter, {
   I_EventEmitter,
   I_EventEmitterEvents,
-  I_EventEmitterConstructorConfig
+	I_EventEmitterConstructorConfig,
+	T_Func
 } from "@xaro/event-emitter";
 
 /** */
@@ -90,22 +128,22 @@ import EventEmitter, {
 
 
 ## Methods
-#### subscribe(key: string, cb: Function): { dispose: Function };
+#### subscribe(key: string, cb: T_Func): { dispose: T_Func };
 	Subscribe on event by key
 
 #### unsubscribe(key: string): void;
 	Unsubscribe from all callbacks from the event and remove its key
 
-#### removeListener(key: string, cb: Function): void;
+#### removeListener(key: string, cb: T_Func): void;
 	Remove callback from event by callback function
 
-#### once(key: string, cb: Function): void;
+#### once(key: string, cb: T_Func): void;
 	Call once call back
 
 #### has(key: string): boolean;
 	Return event key exists
 
-#### emit(key: string, data: any): void;
+#### emit(key: string, ...args: any): void;
 	Emit all callbacks from event by key
 
 
