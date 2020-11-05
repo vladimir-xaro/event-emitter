@@ -23,7 +23,9 @@ export default class EventEmitter implements I_EventEmitter {
   /** multiple subscribe on events */
   protected multipleSubsribe(key: string, value: T_Func | T_Func[]): void {
     if (Array.isArray(value)) {
-      this.multipleSubsribe(key, value);
+      for (const cb of value) {
+        this.multipleSubsribe(key, cb);
+      }
     } else if (typeof value === 'function') {
       this.subscribe(key, value as T_Func);
     }
@@ -77,12 +79,27 @@ export default class EventEmitter implements I_EventEmitter {
 
   /** fire all cbs from event by key */
   emit(key: string, ...args: any): void {
-    const event = this.events[key];
+    const event: T_Func[] = this.events[key];
 
     if (event) {
       for (let cb of event) {
         cb(...args);
       }
     }
+  }
+
+  validateEmit(key: string, ...args: any): boolean {
+    const event: T_Func[] = this.events[key];
+
+    if (event) {
+      for(const cb of event) {
+        if (! cb(...args)) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    return false;
   }
 }

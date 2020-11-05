@@ -7,6 +7,7 @@ export interface I_EventEmitter {
   once(key: string, cb: T_Func): void;
   has(key: string): boolean;
   emit(key: string, ...args: any): void;
+  validateEmit(key: string, ...args: any): boolean;
 }
 
 export interface I_EventEmitterConstructorConfig {

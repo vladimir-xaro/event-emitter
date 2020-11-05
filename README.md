@@ -144,7 +144,10 @@ import EventEmitter, {
 	Return event key exists
 
 #### emit(key: string, ...args: any): void;
-	Emit all callbacks from event by key
+	Emit callbacks from an event by key
+
+#### validateEmit(key: string, ...args: any): boolean;
+	Emit callbacks from an event by key, but terminate execution if the callback returned anything other than true
 
 
 ## License
