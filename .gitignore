@@ -3,6 +3,7 @@
 /build
 /examples
 /node_modules
+/tests
 /webpack
 
 package-lock.json
