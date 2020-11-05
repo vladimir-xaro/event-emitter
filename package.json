@@ -16,7 +16,10 @@
     "type": "git",
     "url": "git+https://github.com/vladimir-xaro/event-emitter.git"
   },
-  "keywords": [],
+  "keywords": [
+    "event-emitter",
+    "typescript"
+  ],
   "author": "Vladimir Slavgorodskiy <vladimir.xaro@gmail.com>",
   "license": "MIT",
   "bugs": {

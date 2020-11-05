@@ -1,6 +1,6 @@
-# EventEmitter
+# @xaro/event-emitter
 
-EventEmitter as node.js, but for browsers.
+EventEmitter as in node.js, but for TypeScript. Includes interfaces and additional methods
 
 ## Install
 
@@ -13,9 +13,11 @@ $ npm install @xaro/event-emitter
 import EventEmitter from '@xaro/event-emitter';
 
 const emitter = new EventEmitter();
+
 const disposeObj = emitter.subscribe('event', args => {
 	console.log(`${args[0]} ${args[1]}`);
 });
+
 emitter.emit('event', 'Hello,', 'World');
 emitter.emit('event', 'It\'s', 'me');
 disposeObj.dispose();
@@ -26,6 +28,8 @@ Result:
 Hello, World
 It's me
 ```
+
+***
 
 Also u can extends Emitter class
 
@@ -39,10 +43,8 @@ class ExtendedEmitter extends EventEmitter {
 }
 
 const extendedEmitter = new ExtendedEmitter({
-	on: {
-		event() {
-			console.log('It\'s work');
-		}
+	event: () => {
+		console.log('It\'s work');
 	}
 });
 
@@ -53,26 +55,26 @@ Result:
 It's work
 ```
 
+***
+
 Also you can pass callbacks in array:
 ```ts
 import EventEmitter from '@xaro/event-emitter';
 
 const emitter = new EventEmitter({
-	on: {
-		event1: [
-			() => {
-				console.log('event1 - cb #0')
-			},
-			() => {
-				console.log('event1 - cb #1')
-			},
-			() => {
-				console.log('event1 - cb #2')
-			}
-		],
-		event2: () => {
-			console.log('event2 - cb #0')
+	event1: [
+		() => {
+			console.log('event1 - cb #0')
+		},
+		() => {
+			console.log('event1 - cb #1')
+		},
+		() => {
+			console.log('event1 - cb #2')
 		}
+	],
+	event2: () => {
+		console.log('event2 - cb #0')
 	}
 });
 
@@ -87,6 +89,41 @@ event1 - cb #2
 event2 - cb #0
 ```
 
+***
+
+Example with series:
+```ts
+import EventEmitter from '@xaro/event-emitter';
+
+const emitter = new EventEmitter({
+  series: [
+    (x: string): number => {
+      return x.length;
+    },
+    (length: number): boolean => {
+      return length % 2 === 0;
+    },
+    (isEven: boolean): object => {
+      return { success: isEven };
+    }
+  ],
+  validate: [
+    (num: number): boolean => {
+      return num >= 21 && num < 120;
+    },
+    (num: number): boolean => {
+      return num % 2 === 1;
+    }
+  ]
+});
+
+const seriesResult: object	= emitter.seriesEmit('series', 'qwerty');	// pass all cb functions
+const validateResult: boolean	= emitter.validateEmit('validate', 22);		// pass first cb, but 22 % 2 != 1
+
+console.log(seriesResult);	// { success: true }
+console.log(validateResult);	// false
+
+```
 
 ## Interfaces & Types
 You can import these interfaces and extend them as needed.
@@ -127,28 +164,33 @@ import EventEmitter, {
 /** */
 ```
 
-
 ## Methods
 #### subscribe(key: string, cb: T_Func): { dispose: T_Func };
-	Subscribe on event by key
+	Creates a key for the event and subscribes the passed callback to it.
 
 #### unsubscribe(key: string): void;
-	Unsubscribe from all callbacks from the event and remove its key
+	Unsubscribes all callback functions from the event and removes the event key.
 
 #### removeListener(key: string, cb: T_Func): void;
-	Remove callback from event by callback function
+	Removes a specific event key callback function.
 
 #### once(key: string, cb: T_Func): void;
-	Call once call back
+	Calls the callback function only once, and then removes it.
 
 #### has(key: string): boolean;
-	Return event key exists
+	Checks for an event by key.
+	(Doesn't check for callback functions)
 
 #### emit(key: string, ...args: any): void;
-	Emit callbacks from an event by key
+	Calls all callback functions on events using the event key.
 
 #### validateEmit(key: string, ...args: any): boolean;
-	Emit callbacks from an event by key, but terminate execution if the callback returned anything other than true
+	Just like "emit" calls all callback functions. However, the callback must return a boolean value, which determines whether or not the next callback will execute.
+	As a result, it returns the result of the last executed callback function.
+
+#### seriesEmit(key: string, ...args: any): any
+	Just like "emit" calls all callbacks, but unlike "emit" it passes the result of the previous callback to the next one as an argument.
+	As aresult, it will return the result of the last callback.
 
 
 ## License

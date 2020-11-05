@@ -8,14 +8,15 @@ export interface I_EventEmitter {
   has(key: string): boolean;
   emit(key: string, ...args: any): void;
   validateEmit(key: string, ...args: any): boolean;
+  seriesEmit(key: string, ...args: any): any;
 }
 
 export interface I_EventEmitterConstructorConfig {
-  [key: string]: T_Func | T_Func[] | undefined;
+  [key: string]: T_Func | Array<T_Func> | undefined;
 }
 
 export interface I_EventEmitterEvents {
   [key: string]: T_Func[];
 }
 
-export type T_Func = (...args: any) => any
+export type T_Func = (...args: any) => any;

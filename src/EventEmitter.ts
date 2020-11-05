@@ -3,14 +3,12 @@ import { I_EventEmitter, I_EventEmitterConstructorConfig, I_EventEmitterEvents, 
 export default class EventEmitter implements I_EventEmitter {
   /**
    * Event list
-   * @type IEventEmitterEvents
    */
   events: I_EventEmitterEvents = {};
 
 
   /**
    * Create Emitter
-   * @param {Object} config Configuration object
    */
   constructor(on: I_EventEmitterConstructorConfig = {}) {
     for (let key in on) {
@@ -20,7 +18,9 @@ export default class EventEmitter implements I_EventEmitter {
     }
   }
 
-  /** multiple subscribe on events */
+  /**
+   * Calls the subscribe method on each element in the array.
+   */
   protected multipleSubsribe(key: string, value: T_Func | T_Func[]): void {
     if (Array.isArray(value)) {
       for (const cb of value) {
@@ -32,9 +32,11 @@ export default class EventEmitter implements I_EventEmitter {
   }
 
 
-  /** subscribe on event by key */
+  /**
+   * Creates a key for the event and subscribes the passed callback to it.
+   */
   subscribe(key: string, cb: T_Func): { dispose: T_Func } {
-    if (!this.events[key]) {
+    if (!this.has(key)) {
       this.events[key] = [];
     }
 
@@ -45,14 +47,19 @@ export default class EventEmitter implements I_EventEmitter {
     };
   }
 
-  /** unsubscribe all cb from events by key and remove key from events */
+  /**
+   * Unsubscribes all callback functions from the event and removes the event
+   * key.
+   */
   unsubscribe(key: string): void {
     if (this.events[key]) {
       delete this.events[key];
     }
   }
 
-  /** remove cb from event by key and cb */
+  /**
+   * Removes a specific event key callback function.
+   */
   removeListener(key: string, cb: T_Func): void {
     // if (typeof this.events[key] === 'object') {
     if (Array.isArray(this.events[key])) {
@@ -64,7 +71,9 @@ export default class EventEmitter implements I_EventEmitter {
     }
   }
 
-  /** once emit cb and remove it */
+  /**
+   * Calls the callback function only once, and then removes it.
+   */
   once(key: string, cb: T_Func): void {
     const remove = this.subscribe(key, (data) => {
       remove.dispose();
@@ -72,12 +81,17 @@ export default class EventEmitter implements I_EventEmitter {
     });
   }
 
-  /** check if key exists in events */
+  /**
+   * Checks for an event by key.
+   * (Doesn't check for callback functions)
+   */
   has(key: string): boolean {
     return !!this.events[key];
   }
 
-  /** fire all cbs from event by key */
+  /**
+   * Calls all callback functions on events using the event key.
+   */
   emit(key: string, ...args: any): void {
     const event: T_Func[] = this.events[key];
 
@@ -88,18 +102,51 @@ export default class EventEmitter implements I_EventEmitter {
     }
   }
 
+
+  /**
+   * Just like "emit" calls all callback functions. However, the callback must
+   * return a boolean value, which determines whether or not the next callback
+   * will execute.
+   * As a result, it returns the result of the last executed callback function.
+   */
   validateEmit(key: string, ...args: any): boolean {
     const event: T_Func[] = this.events[key];
 
-    if (event) {
-      for(const cb of event) {
-        if (! cb(...args)) {
-          return false;
-        }
-      }
-      return true;
+    if (! event) {
+      return false;
     }
 
-    return false;
+    for(const cb of event) {
+      if (! cb(...args)) {
+        return false;
+      }
+    }
+    
+    return true;
+  }
+
+  /**
+   * Just like "emit" calls all callbacks, but unlike "emit" it passes the
+   * result of the previous callback to the next one as an argument.
+   * As aresult, it will return the result of the last callback.
+   */
+  seriesEmit(key: string, ...args: any): any {
+    const event: T_Func[] = this.events[key];
+
+    if (! event) {
+      return;
+    }
+
+    let params: any;
+
+    for (let i = 0; i < event.length; i++) {
+      if (i === 0) {
+        params = event[i](...args);
+      } else {
+        params = event[i](params);
+      }
+    }
+
+    return params;
   }
 }
