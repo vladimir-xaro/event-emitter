@@ -91,7 +91,7 @@ event2 - cb #0
 
 ***
 
-Example with series:
+Example with series and validate:
 ```ts
 import EventEmitter from '@xaro/event-emitter';
 
