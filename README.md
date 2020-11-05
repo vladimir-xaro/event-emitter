@@ -101,7 +101,8 @@ export interface I_EventEmitter {
 	removeListener(key: string, cb: T_Func): void;
 	once(key: string, cb: T_Func): void;
 	has(key: string): boolean;
-	emit(key: string, data: any): void;
+	emit(key: string, ...args: any): void;
+	validateEmit(key: string, ...args: any): boolean;
 }
 
 export interface I_EventEmitterConstructorConfig {
