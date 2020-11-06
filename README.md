@@ -14,13 +14,13 @@ import EventEmitter from '@xaro/event-emitter';
 
 const emitter = new EventEmitter();
 
-const disposeObj = emitter.subscribe('event', args => {
+const dispose = emitter.subscribe('event', args => {
 	console.log(`${args[0]} ${args[1]}`);
 });
 
 emitter.emit('event', 'Hello,', 'World');
 emitter.emit('event', 'It\'s', 'me');
-disposeObj.dispose();
+dispose();
 emitter.emit('event', 'will not show');
 ```
 Result:
@@ -62,24 +62,43 @@ Also you can pass callbacks in array:
 import EventEmitter from '@xaro/event-emitter';
 
 const emitter = new EventEmitter({
-	event1: [
+	'event-1': [
 		() => {
-			console.log('event1 - cb #0')
+			console.log('event-1 - cb #0')
 		},
 		() => {
-			console.log('event1 - cb #1')
+			console.log('event-1 - cb #1')
 		},
 		() => {
-			console.log('event1 - cb #2')
+			console.log('event-1 - cb #2')
 		}
 	],
-	event2: () => {
-		console.log('event2 - cb #0')
+	'event-2': () => {
+		console.log('event-2 - cb #0')
 	}
 });
 
+emitter.once('event-3', () => {
+	console.log('[once] event-3 - cb');
+})
+emitter.once('event-4', [
+	() => {
+		console.log('[once] event-4 - cb #0');
+	},
+	() => {
+		console.log('[once] event-4 - cb #1')
+	}
+])
+
 emitter.emit('event1');
+
 emitter.emit('event2');
+
+emitter.emit('event-3');
+emitter.emit('event-3');	// Will not be called
+
+emitter.emit('event-4');
+emitter.emit('event-4');	// Will not be called
 ```
 Result:
 ```
@@ -87,6 +106,9 @@ event1 - cb #0
 event1 - cb #1
 event1 - cb #2
 event2 - cb #0
+[once] event3 - cb
+[once] event4 - cb #0
+[once] event4 - cb #1
 ```
 
 ***
@@ -131,26 +153,27 @@ You can import these interfaces and extend them as needed.
 *types.d.ts*
 ```ts
 export interface I_EventEmitter {
-	events: I_EventEmitterEvents;
+  events: I_EventEmitterEvents;
 
-	subscribe(key: string, cb: T_Func): { dispose: T_Func };
-	unsubscribe(key: string): void;
-	removeListener(key: string, cb: T_Func): void;
-	once(key: string, cb: T_Func): void;
-	has(key: string): boolean;
-	emit(key: string, ...args: any): void;
-	validateEmit(key: string, ...args: any): boolean;
+  subscribe(key: string, cb: T_Func | T_Func[]): T_Func[];
+  unsubscribe(key: string): void;
+  removeListener(key: string, cb: T_Func): void;
+  once(key: string, cb: T_Func | T_Func[]): void;
+  has(key: string): boolean;
+  emit(key: string, ...args: any): void;
+  validateEmit(key: string, ...args: any): boolean;
+  seriesEmit(key: string, ...args: any): any;
 }
 
 export interface I_EventEmitterConstructorConfig {
-	[key: string]: T_Func | T_Func[] | undefined;
+  [key: string]: T_Func | T_Func[] | undefined;
 }
 
 export interface I_EventEmitterEvents {
-	[key: string]: T_Func[];
+  [key: string]: T_Func[];
 }
 
-export type T_Func = (...args: any) => any
+export type T_Func = (...args: any) => any;
 ```
 *your_file.ts*
 ```ts
@@ -161,12 +184,12 @@ import EventEmitter, {
 	T_Func
 } from "@xaro/event-emitter";
 
-/** */
+// ...
 ```
 
 ## Methods
-#### subscribe(key: string, cb: T_Func): { dispose: T_Func };
-	Creates a key for the event and subscribes the passed callback to it.
+#### subscribe(key: string, cb: T_Func | T_Func[]): T_Func[];
+	Creates a key for the event and subscribes the passed callback function/s to it.
 
 #### unsubscribe(key: string): void;
 	Unsubscribes all callback functions from the event and removes the event key.
@@ -174,8 +197,8 @@ import EventEmitter, {
 #### removeListener(key: string, cb: T_Func): void;
 	Removes a specific event key callback function.
 
-#### once(key: string, cb: T_Func): void;
-	Calls the callback function only once, and then removes it.
+#### once(key: string, cb: T_Func | T_Func[]): void;
+	Calls the callback function/s only once, and then removes it.
 
 #### has(key: string): boolean;
 	Checks for an event by key.

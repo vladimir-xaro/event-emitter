@@ -1,10 +1,10 @@
 export interface I_EventEmitter {
   events: I_EventEmitterEvents;
 
-  subscribe(key: string, cb: T_Func): { dispose: T_Func };
+  subscribe(key: string, cb: T_Func | T_Func[]): T_Func[];
   unsubscribe(key: string): void;
   removeListener(key: string, cb: T_Func): void;
-  once(key: string, cb: T_Func): void;
+  once(key: string, cb: T_Func | T_Func[]): void;
   has(key: string): boolean;
   emit(key: string, ...args: any): void;
   validateEmit(key: string, ...args: any): boolean;
@@ -12,7 +12,7 @@ export interface I_EventEmitter {
 }
 
 export interface I_EventEmitterConstructorConfig {
-  [key: string]: T_Func | Array<T_Func> | undefined;
+  [key: string]: T_Func | T_Func[] | undefined;
 }
 
 export interface I_EventEmitterEvents {

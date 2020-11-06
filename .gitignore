@@ -6,6 +6,7 @@
 /tests
 /webpack
 
+/src/index.dev.ts
 package-lock.json
 tsconfig.json
 tsconfig.json.default

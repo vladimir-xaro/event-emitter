@@ -13,38 +13,31 @@ export default class EventEmitter implements I_EventEmitter {
   constructor(on: I_EventEmitterConstructorConfig = {}) {
     for (let key in on) {
       if (on[key]) {
-        this.multipleSubsribe(key, on[key] as T_Func | T_Func[])
+        this.subscribe(key, on[key] as T_Func | T_Func[]);
       }
     }
   }
-
-  /**
-   * Calls the subscribe method on each element in the array.
-   */
-  protected multipleSubsribe(key: string, value: T_Func | T_Func[]): void {
-    if (Array.isArray(value)) {
-      for (const cb of value) {
-        this.multipleSubsribe(key, cb);
-      }
-    } else if (typeof value === 'function') {
-      this.subscribe(key, value as T_Func);
-    }
-  }
-
 
   /**
    * Creates a key for the event and subscribes the passed callback to it.
    */
-  subscribe(key: string, cb: T_Func): { dispose: T_Func } {
+  subscribe(key: string, cb: T_Func | T_Func[]): T_Func[] {
     if (!this.has(key)) {
       this.events[key] = [];
     }
 
-    this.events[key].push(cb);
+    let removes: T_Func[] = [];
 
-    return {
-      dispose: () => this.removeListener(key, cb)
-    };
+    if (Array.isArray(cb)) {
+      for (const _cb of cb) {
+        removes.push(...this.subscribe(key, _cb));
+      }
+    } else {
+      this.events[key].push(cb);
+      removes.push(() => this.removeListener(key, cb));
+    }
+
+    return removes;
   }
 
   /**
@@ -74,11 +67,17 @@ export default class EventEmitter implements I_EventEmitter {
   /**
    * Calls the callback function only once, and then removes it.
    */
-  once(key: string, cb: T_Func): void {
-    const remove = this.subscribe(key, (data) => {
-      remove.dispose();
-      cb(data);
-    });
+  once(key: string, cb: T_Func | T_Func[]): void {
+    const remove = this.subscribe(key, () => {
+      remove[0]();
+      if (Array.isArray(cb)) {
+        for (const _cb of cb) {
+          _cb();
+        }
+      } else {
+        cb();
+      }
+    })
   }
 
   /**
