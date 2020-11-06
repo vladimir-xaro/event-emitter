@@ -6,6 +6,7 @@ export interface I_EventEmitter {
   removeListener(key: string, cb: T_Func): void;
   once(key: string, cb: T_Func | T_Func[]): void;
   has(key: string): boolean;
+  listenerCount(key: string): number | false;
   emit(key: string, ...args: any): void;
   validateEmit(key: string, ...args: any): boolean;
   seriesEmit(key: string, ...args: any): any;

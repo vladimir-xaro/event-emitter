@@ -18,6 +18,7 @@ export default class EventEmitter implements I_EventEmitter {
     }
   }
 
+
   /**
    * Creates a key for the event and subscribes the passed callback to it.
    */
@@ -40,6 +41,7 @@ export default class EventEmitter implements I_EventEmitter {
     return removes;
   }
 
+
   /**
    * Unsubscribes all callback functions from the event and removes the event
    * key.
@@ -49,6 +51,7 @@ export default class EventEmitter implements I_EventEmitter {
       delete this.events[key];
     }
   }
+
 
   /**
    * Removes a specific event key callback function.
@@ -63,6 +66,7 @@ export default class EventEmitter implements I_EventEmitter {
       }
     }
   }
+
 
   /**
    * Calls the callback function only once, and then removes it.
@@ -80,6 +84,7 @@ export default class EventEmitter implements I_EventEmitter {
     })
   }
 
+
   /**
    * Checks for an event by key.
    * (Doesn't check for callback functions)
@@ -87,6 +92,20 @@ export default class EventEmitter implements I_EventEmitter {
   has(key: string): boolean {
     return !!this.events[key];
   }
+
+
+  /**
+   * Returns the number of callback functions for the event key or "false" if
+   * there is no key
+   */
+  listenerCount(key: string): number | false {
+    if (! this.events.hasOwnProperty(key)) {
+      return false
+    }
+
+    return this.events[key].length;
+  }
+
 
   /**
    * Calls all callback functions on events using the event key.
@@ -123,6 +142,7 @@ export default class EventEmitter implements I_EventEmitter {
     
     return true;
   }
+
 
   /**
    * Just like "emit" calls all callbacks, but unlike "emit" it passes the

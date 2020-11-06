@@ -118,25 +118,25 @@ Example with series and validate:
 import EventEmitter from '@xaro/event-emitter';
 
 const emitter = new EventEmitter({
-  series: [
-    (x: string): number => {
-      return x.length;
-    },
-    (length: number): boolean => {
-      return length % 2 === 0;
-    },
-    (isEven: boolean): object => {
-      return { success: isEven };
-    }
-  ],
-  validate: [
-    (num: number): boolean => {
-      return num >= 21 && num < 120;
-    },
-    (num: number): boolean => {
-      return num % 2 === 1;
-    }
-  ]
+	series: [
+		(x: string): number => {
+			return x.length;
+		},
+		(length: number): boolean => {
+			return length % 2 === 0;
+		},
+		(isEven: boolean): object => {
+			return { success: isEven };
+		}
+	],
+	validate: [
+		(num: number): boolean => {
+			return num >= 21 && num < 120;
+		},
+		(num: number): boolean => {
+			return num % 2 === 1;
+		}
+	]
 });
 
 const seriesResult: object	= emitter.seriesEmit('series', 'qwerty');	// pass all cb functions
@@ -144,7 +144,6 @@ const validateResult: boolean	= emitter.validateEmit('validate', 22);		// pass f
 
 console.log(seriesResult);	// { success: true }
 console.log(validateResult);	// false
-
 ```
 
 ## Interfaces & Types
@@ -153,24 +152,25 @@ You can import these interfaces and extend them as needed.
 *types.d.ts*
 ```ts
 export interface I_EventEmitter {
-  events: I_EventEmitterEvents;
+	events: I_EventEmitterEvents;
 
-  subscribe(key: string, cb: T_Func | T_Func[]): T_Func[];
-  unsubscribe(key: string): void;
-  removeListener(key: string, cb: T_Func): void;
-  once(key: string, cb: T_Func | T_Func[]): void;
-  has(key: string): boolean;
-  emit(key: string, ...args: any): void;
-  validateEmit(key: string, ...args: any): boolean;
-  seriesEmit(key: string, ...args: any): any;
+	subscribe(key: string, cb: T_Func | T_Func[]): T_Func[];
+	unsubscribe(key: string): void;
+	removeListener(key: string, cb: T_Func): void;
+	once(key: string, cb: T_Func | T_Func[]): void;
+	has(key: string): boolean;
+	listenerCount(key: string): number | false;
+	emit(key: string, ...args: any): void;
+	validateEmit(key: string, ...args: any): boolean;
+	seriesEmit(key: string, ...args: any): any;
 }
 
 export interface I_EventEmitterConstructorConfig {
-  [key: string]: T_Func | T_Func[] | undefined;
+	[key: string]: T_Func | T_Func[] | undefined;
 }
 
 export interface I_EventEmitterEvents {
-  [key: string]: T_Func[];
+	[key: string]: T_Func[];
 }
 
 export type T_Func = (...args: any) => any;
@@ -203,6 +203,9 @@ import EventEmitter, {
 #### has(key: string): boolean;
 	Checks for an event by key.
 	(Doesn't check for callback functions)
+
+#### listenerCount(key: string): number | false;
+	Returns the number of callback functions for the event key or "false" if there is no key
 
 #### emit(key: string, ...args: any): void;
 	Calls all callback functions on events using the event key.
