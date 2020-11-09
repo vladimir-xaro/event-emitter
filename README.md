@@ -155,7 +155,7 @@ export interface I_EventEmitter {
 	events: I_EventEmitterEvents;
 
 	subscribe(key: string, cb: T_Func | T_Func[]): T_Func[];
-	unsubscribe(key: string): void;
+	unsubscribe(...keys: string[]): void;
 	removeListener(key: string, cb: T_Func): void;
 	once(key: string, cb: T_Func | T_Func[]): void;
 	has(key: string): boolean;
@@ -191,8 +191,8 @@ import EventEmitter, {
 #### subscribe(key: string, cb: T_Func | T_Func[]): T_Func[];
 	Creates a key for the event and subscribes the passed callback function/s to it.
 
-#### unsubscribe(key: string): void;
-	Unsubscribes all callback functions from the event and removes the event key.
+#### unsubscribe(...key: string[]): void;
+	Unsubscribes all callback functions from the event/s and removes the event key.
 
 #### removeListener(key: string, cb: T_Func): void;
 	Removes a specific event key callback function.

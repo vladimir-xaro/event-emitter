@@ -46,9 +46,11 @@ export default class EventEmitter implements I_EventEmitter {
    * Unsubscribes all callback functions from the event and removes the event
    * key.
    */
-  unsubscribe(key: string): void {
-    if (this.events[key]) {
-      delete this.events[key];
+  unsubscribe(...keys: string[]): void {
+    for (const key of keys) {
+      if (this.events[key]) {
+        delete this.events[key];
+      }
     }
   }
 

@@ -2,7 +2,7 @@ export interface I_EventEmitter {
   events: I_EventEmitterEvents;
 
   subscribe(key: string, cb: T_Func | T_Func[]): T_Func[];
-  unsubscribe(key: string): void;
+  unsubscribe(...keys: string[]): void;
   removeListener(key: string, cb: T_Func): void;
   once(key: string, cb: T_Func | T_Func[]): void;
   has(key: string): boolean;
