@@ -1,4 +1,4 @@
-import { I_EventEmitter, I_EventEmitterConstructorConfig, I_EventEmitterEvents, T_Func } from './types';
+import { I_EventEmitter, I_EventEmitterConstructorConfig, I_EventEmitterEvents } from './types';
 
 export default class EventEmitter implements I_EventEmitter {
   /**
@@ -13,7 +13,7 @@ export default class EventEmitter implements I_EventEmitter {
   constructor(on: I_EventEmitterConstructorConfig = {}) {
     for (let key in on) {
       if (on[key]) {
-        this.subscribe(key, on[key] as T_Func | T_Func[]);
+        this.subscribe(key, on[key] as Function | Function[]);
       }
     }
   }
@@ -22,12 +22,12 @@ export default class EventEmitter implements I_EventEmitter {
   /**
    * Creates a key for the event and subscribes the passed callback to it.
    */
-  subscribe(key: string, cb: T_Func | T_Func[]): T_Func[] {
+  subscribe(key: string, cb: Function | Function[]): Function[] {
     if (!this.has(key)) {
       this.events[key] = [];
     }
 
-    let removes: T_Func[] = [];
+    let removes: Function[] = [];
 
     if (Array.isArray(cb)) {
       for (const _cb of cb) {
@@ -58,7 +58,7 @@ export default class EventEmitter implements I_EventEmitter {
   /**
    * Removes a specific event key callback function.
    */
-  removeListener(key: string, cb: T_Func): void {
+  removeListener(key: string, cb: Function): void {
     // if (typeof this.events[key] === 'object') {
     if (Array.isArray(this.events[key])) {
       const idx = this.events[key].indexOf(cb);
@@ -73,7 +73,7 @@ export default class EventEmitter implements I_EventEmitter {
   /**
    * Calls the callback function only once, and then removes it.
    */
-  once(key: string, cb: T_Func | T_Func[]): void {
+  once(key: string, cb: Function | Function[]): void {
     const remove = this.subscribe(key, () => {
       remove[0]();
       if (Array.isArray(cb)) {
@@ -113,7 +113,7 @@ export default class EventEmitter implements I_EventEmitter {
    * Calls all callback functions on events using the event key.
    */
   emit(key: string, ...args: any): void {
-    const event: T_Func[] = this.events[key];
+    const event: Function[] = this.events[key];
 
     if (event) {
       for (let cb of event) {
@@ -130,7 +130,7 @@ export default class EventEmitter implements I_EventEmitter {
    * As a result, it returns the result of the last executed callback function.
    */
   validateEmit(key: string, ...args: any): boolean {
-    const event: T_Func[] = this.events[key];
+    const event: Function[] = this.events[key];
 
     if (! event) {
       return false;
@@ -152,7 +152,7 @@ export default class EventEmitter implements I_EventEmitter {
    * As aresult, it will return the result of the last callback.
    */
   seriesEmit(key: string, ...args: any): any {
-    const event: T_Func[] = this.events[key];
+    const event: Function[] = this.events[key];
 
     if (! event) {
       return;

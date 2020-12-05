@@ -11,7 +11,8 @@
     "build": "cross-env NODE_ENV=development webpack --config webpack/webpack.dev.js",
     "watch:prod": "cross-env NODE_ENV=production webpack --watch --config webpack/webpack.prod.js",
     "build:prod": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.js",
-    "build:prod:min": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.min.js"
+    "build:prod:min": "cross-env NODE_ENV=production webpack --config webpack/webpack.prod.min.js",
+    "build:all": "npm run build && npm run build:prod && npm run build:prod:min"
   },
   "repository": {
     "type": "git",

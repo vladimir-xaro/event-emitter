@@ -1,3 +1,5 @@
+[![DeepScan grade](https://deepscan.io/api/teams/11657/projects/14577/branches/274604/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=11657&pid=14577&bid=274604)
+
 # @xaro/event-emitter
 
 EventEmitter as in node.js, but for TypeScript. Includes interfaces and additional methods
@@ -113,7 +115,7 @@ event2 - cb #0
 
 ***
 
-Example with series and validate:
+## Series and Validate emits:
 ```ts
 import EventEmitter from '@xaro/event-emitter';
 
@@ -147,57 +149,43 @@ console.log(validateResult);	// false
 ```
 
 ## Interfaces & Types
-You can import these interfaces and extend them as needed.
 
 *types.d.ts*
 ```ts
 export interface I_EventEmitter {
-	events: I_EventEmitterEvents;
+  events: I_EventEmitterEvents;
 
-	subscribe(key: string, cb: T_Func | T_Func[]): T_Func[];
-	unsubscribe(...keys: string[]): void;
-	removeListener(key: string, cb: T_Func): void;
-	once(key: string, cb: T_Func | T_Func[]): void;
-	has(key: string): boolean;
-	listenerCount(key: string): number | false;
-	emit(key: string, ...args: any): void;
-	validateEmit(key: string, ...args: any): boolean;
-	seriesEmit(key: string, ...args: any): any;
+  subscribe(key: string, cb: Function | Function[]): Function[];
+  unsubscribe(...keys: string[]): void;
+  removeListener(key: string, cb: Function): void;
+  once(key: string, cb: Function | Function[]): void;
+  has(key: string): boolean;
+  listenerCount(key: string): number | false;
+  emit(key: string, ...args: any): void;
+  validateEmit(key: string, ...args: any): boolean;
+  seriesEmit(key: string, ...args: any): any;
 }
 
 export interface I_EventEmitterConstructorConfig {
-	[key: string]: T_Func | T_Func[] | undefined;
+  [key: string]: Function | Function[] | undefined;
 }
 
 export interface I_EventEmitterEvents {
-	[key: string]: T_Func[];
+  [key: string]: Function[];
 }
-
-export type T_Func = (...args: any) => any;
-```
-*your_file.ts*
-```ts
-import EventEmitter, {
-	I_EventEmitter,
-	I_EventEmitterEvents,
-	I_EventEmitterConstructorConfig,
-	T_Func
-} from "@xaro/event-emitter";
-
-// ...
 ```
 
 ## Methods
-#### subscribe(key: string, cb: T_Func | T_Func[]): T_Func[];
+#### subscribe(key: string, cb: Function | Function[]): Function[];
 	Creates a key for the event and subscribes the passed callback function/s to it.
 
 #### unsubscribe(...key: string[]): void;
 	Unsubscribes all callback functions from the event/s and removes the event key.
 
-#### removeListener(key: string, cb: T_Func): void;
+#### removeListener(key: string, cb: Function): void;
 	Removes a specific event key callback function.
 
-#### once(key: string, cb: T_Func | T_Func[]): void;
+#### once(key: string, cb: Function | Function[]): void;
 	Calls the callback function/s only once, and then removes it.
 
 #### has(key: string): boolean;

@@ -1,10 +1,10 @@
 export interface I_EventEmitter {
   events: I_EventEmitterEvents;
 
-  subscribe(key: string, cb: T_Func | T_Func[]): T_Func[];
+  subscribe(key: string, cb: Function | Function[]): Function[];
   unsubscribe(...keys: string[]): void;
-  removeListener(key: string, cb: T_Func): void;
-  once(key: string, cb: T_Func | T_Func[]): void;
+  removeListener(key: string, cb: Function): void;
+  once(key: string, cb: Function | Function[]): void;
   has(key: string): boolean;
   listenerCount(key: string): number | false;
   emit(key: string, ...args: any): void;
@@ -13,11 +13,9 @@ export interface I_EventEmitter {
 }
 
 export interface I_EventEmitterConstructorConfig {
-  [key: string]: T_Func | T_Func[] | undefined;
+  [key: string]: Function | Function[] | undefined;
 }
 
 export interface I_EventEmitterEvents {
-  [key: string]: T_Func[];
+  [key: string]: Function[];
 }
-
-export type T_Func = (...args: any) => any;
