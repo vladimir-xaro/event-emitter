@@ -76,13 +76,7 @@ export default class EventEmitter implements I_EventEmitter {
   once(key: string, cb: Function | Function[]): void {
     const remove = this.subscribe(key, () => {
       remove[0]();
-      if (Array.isArray(cb)) {
-        for (const _cb of cb) {
-          _cb();
-        }
-      } else {
-        cb();
-      }
+      Array.isArray(cb) ? cb.forEach(_cb => _cb()) : cb();
     })
   }
 
