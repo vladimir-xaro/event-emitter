@@ -7,6 +7,7 @@
 /webpack
 
 /src/index.dev.ts
+
+.env
 package-lock.json
 tsconfig.json
-tsconfig.json.default
