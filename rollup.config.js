@@ -76,7 +76,7 @@ export default CLIArgs => {
       }),
       Object.assign({}, baseOutput, {
         format: 'iife',
-        file: `dist/${filename}.js`,
+        file: `dist/${filename}.min.js`,
         plugins: [
           terser(),
         ]
