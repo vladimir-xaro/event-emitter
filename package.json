@@ -2,9 +2,10 @@
   "name": "@xaro/event-emitter",
   "version": "1.4.7",
   "description": "",
-  "main": "./src/index.ts",
+  "main": "./dist/event-emitter.min.js",
   "files": [
-    "/src"
+    "/src",
+    "/dist"
   ],
   "scripts": {
     "watch": "cross-env rollup -c -w --environment BUILD:development",
