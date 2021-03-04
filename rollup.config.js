@@ -9,22 +9,50 @@ export default CLIArgs => {
   const mode = process.env.BUILD || 'development';
   const isDev = mode === 'development';
 
+  const name = 'EventEmitter';
+  const filename = 'event-emitter';
+
+  const baseOutput = {
+    sourcemap: true,
+    name,
+  };
+  let output = [];
+
+  if (isDev) {
+    output.push(Object.assign({}, baseOutput, {
+      format: 'iife',
+      file: `dev/${filename}.js`
+    }));
+  } else {
+    output.push(
+      Object.assign({}, baseOutput, {
+        format: 'iife',
+        file: `dist/${filename}.js`
+      }),
+      Object.assign({}, baseOutput, {
+        format: 'iife',
+        file: `dist/${filename}.min.js`,
+        plugins: [
+          terser(),
+        ]
+      }),
+      Object.assign({}, baseOutput, {
+        format: 'es',
+        file: `dist/${filename}.es.js`
+      }),
+      Object.assign({}, baseOutput, {
+        format: 'es',
+        file: `dist/${filename}.es.min.js`,
+        plugins: [
+          terser(),
+        ]
+      }),
+    );
+  }
+
   return {
     input: 'src/index' + (isDev ? '.dev' : '') + '.ts',
-    output: [{
-      sourcemap: true,
-      format: 'iife',
-      name: 'EventEmitter',
-      file: (isDev ? 'dev' : 'dist') + '/event-emitter.js',
-    }, {
-      sourcemap: true,
-      format: 'iife',
-      name: 'EventEmitter',
-      file: (isDev ? 'dev' : 'dist') + '/event-emitter.min.js',
-      plugins: [
-        !isDev && terser(),
-      ]
-    }],
+    output,
     plugins: [
       resolve({
         browser: true,
