@@ -1,11 +1,10 @@
-[![DeepScan grade](https://deepscan.io/api/teams/11657/projects/14577/branches/274604/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=11657&pid=14577&bid=274604)
-
 # @xaro/event-emitter
 
-EventEmitter as in node.js, but for TypeScript. Includes interfaces and additional methods
+Lightweight EventEmitter for TypeScript with additional methods. (JavaScript distribution included)
+
+[![DeepScan grade](https://deepscan.io/api/teams/11657/projects/14577/branches/274604/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=11657&pid=14577&bid=274604)
 
 ## Install
-
 ```
 $ npm install @xaro/event-emitter
 ```
@@ -149,7 +148,6 @@ console.log(validateResult);	// false
 ```
 
 ## Interfaces & Types
-
 *types.d.ts*
 ```ts
 export interface I_EventEmitter {
