@@ -84,7 +84,7 @@ export default CLIArgs => {
     );
 
     // es
-    result[0].output.push(
+    result[1].output.push(
       Object.assign({}, baseOutput, {
         format: 'es',
         file: `dist/${filename}.es.js`,

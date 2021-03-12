@@ -3,7 +3,7 @@ import EventEmitter from "./EventEmitter";
 export default EventEmitter;
 
 export {
-  I_EventEmitter,
-  I_EventEmitterEvents,
-  I_EventEmitterConstructorConfig
+  EventEmitter as I_EventEmitter,
+  EventEmitterEvents as I_EventEmitterEvents,
+  EventEmitterConstructorConfig as I_EventEmitterConstructorConfig
 } from "./types";

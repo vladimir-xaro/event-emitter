@@ -1,5 +1,7 @@
-export interface EventEmitter {
+export default class EventEmitter {
   events: EventEmitterEvents;
+
+  constructor(config?: EventEmitterConstructorConfig);
 
   subscribe(key: string, cb: Function | Function[]): Function[];
   unsubscribe(...keys: string[]): void;

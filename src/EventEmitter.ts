@@ -1,4 +1,8 @@
-import { I_EventEmitter, I_EventEmitterConstructorConfig, I_EventEmitterEvents } from './types';
+import {
+  EventEmitter as I_EventEmitter,
+  EventEmitterConstructorConfig as I_EventEmitterConstructorConfig,
+  EventEmitterEvents as I_EventEmitterEvents
+} from './types';
 
 export default class EventEmitter implements I_EventEmitter {
   /**
