@@ -1,6 +1,6 @@
 {
   "name": "@xaro/event-emitter",
-  "version": "1.4.12",
+  "version": "1.4.13",
   "description": "Easy event emitter with additional features",
   "main": "./dist/event-emitter.es.js",
   "types": "./dist/event-emitter.d.ts",
