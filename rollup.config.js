@@ -1,103 +1,115 @@
 import typescript from '@rollup/plugin-typescript';
-// import preprocess from "svelte-preprocess";
 import resolve from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
-// import commonjs from '@rollup/plugin-commonjs';
-import cleanup from 'rollup-plugin-cleanup';
+// import deepmerge from 'deepmerge';
+import { babel } from '@rollup/plugin-babel';
+import commonjs from '@rollup/plugin-commonjs';
 
-export default CLIArgs => {
-  const mode = process.env.BUILD || 'development';
-  const isDev = mode === 'development';
+// const arrayMerge = (destination, source) => [ ...destination, ...source ];
 
-  const name = 'EventEmitter';
-  const filename = 'event-emitter';
+const isDev = process.env.NODE_ENV !== 'production'
 
-  let result = [];
+const filename = 'event-emitter';
+const name = 'EventEmitter';
 
-  if (isDev) {
-    result.push({
-      input: 'src/index.dev.ts',
-      output: {
+const config = [];
+
+if (isDev) {  // Dev
+  config.push({
+    input: 'src/index.dev.ts',
+    output: {
+      sourcemap: true,
+      name,
+      format: 'umd',
+      file: `dev/${filename}.js`,
+      plugins: [
+        terser({
+          format: {
+            indent_level: 2,
+            beautify: true,
+            comments: false,
+          }
+        }),
+      ]
+    },
+    plugins: [
+      typescript({
+        target: 'esnext',
+      }),
+    ]
+  });
+} else {  // Prod
+  config.push({
+    input: 'src/index.ts',
+    output: [
+      {
+        sourcemap: true,
+        name,
+        format: 'es',
+        file: `dist/${filename}.es.js`,
+      }
+    ],
+    plugins: [
+      typescript({
+        target: 'esnext',
+      }),
+      terser({
+        format: {
+          beautify: true,
+          comments: true,
+        }
+      }),
+    ]
+  }, {
+    input: 'src/index.ts',
+    output: [
+      {
         sourcemap: true,
         name,
         format: 'iife',
-        file: `dev/${filename}.js`,
-        plugins: [
-          resolve({
-            browser: true,
-          }),
-          typescript({
-            target: 'es5'
-          }),
-        ]
-      },
-      plugins: [],
-    })
-  } else {
-    const base = {
-      input: 'src/index.ts',
-      output: [],
-      plugins: [
-        cleanup({
-          comments: 'none'
-        }),
-      ],
-    };
-    const baseOutput = {
-      sourcemap: true,
-      name,
-    }
-
-    result.push(
-      Object.assign({}, base, {
-        plugins: [
-          resolve({
-            browser: true,
-          }),
-          typescript({
-            target: 'es5'
-          }),
-        ]
+        file: `dist/${filename}.js`,
+      }, {
+        sourcemap: true,
+        name,
+        format: 'umd',
+        file: `dist/${filename}.umd.js`,
+      }, {
+        sourcemap: true,
+        name,
+        format: 'cjs',
+        file: `dist/${filename}.cjs.js`,
+      }
+    ],
+    plugins: [
+      typescript({
+        target: 'esnext',
       }),
-      Object.assign({}, base, {
-        plugins: [
-          typescript({
-            target: 'esnext'
-          }),
-        ]
+      commonjs(),
+      terser({
+        format: {
+          beautify: true,
+          comments: true,
+        }
       }),
-    );
-
-    // es5
-    result[0].output.push(
-      Object.assign({}, baseOutput, {
-        format: 'iife',
-        file: `dist/${filename}.js`
+      resolve({
+        browser: true,
       }),
-      Object.assign({}, baseOutput, {
-        format: 'iife',
-        file: `dist/${filename}.min.js`,
-        plugins: [
-          terser(),
-        ]
+      babel({
+        babelHelpers: 'bundled',
+        presets: [
+          [
+            "@babel/preset-env",
+            {
+              // targets: {
+              //   "chrome": ">76",
+              // }
+              targets: "defaults"
+            }
+          ]
+        ],
       }),
-    );
-
-    // es
-    result[1].output.push(
-      Object.assign({}, baseOutput, {
-        format: 'es',
-        file: `dist/${filename}.es.js`,
-      }),
-      Object.assign({}, baseOutput, {
-        format: 'es',
-        file: `dist/${filename}.es.min.js`,
-        plugins: [
-          terser(),
-        ]
-      }),
-    );
-  }
-
-  return result;
+    ]
+  })
 }
+
+export default config;

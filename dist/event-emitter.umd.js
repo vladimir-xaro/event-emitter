@@ -1,4 +1,6 @@
-var EventEmitter = function() {
+!function(e, t) {
+    "object" == typeof exports && "undefined" != typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define(t) : (e = "undefined" != typeof globalThis ? globalThis : e || self).EventEmitter = t();
+}(this, (function() {
     "use strict";
     return class {
         /**
@@ -16,7 +18,7 @@ var EventEmitter = function() {
          */        subscribe(e, t) {
             this.has(e) || (this.events[e] = []);
             let s = [];
-            if (Array.isArray(t)) for (const r of t) s.push(...this.subscribe(e, r)); else this.events[e].push(t), 
+            if (Array.isArray(t)) for (const n of t) s.push(...this.subscribe(e, n)); else this.events[e].push(t), 
             s.push((() => this.removeListener(e, t)));
             return s;
         }
@@ -78,10 +80,10 @@ var EventEmitter = function() {
          */        seriesEmit(e, ...t) {
             const s = this.events[e];
             if (!s) return;
-            let r;
-            for (let e = 0; e < s.length; e++) r = 0 === e ? s[e](...t) : s[e](r);
-            return r;
+            let n;
+            for (let e = 0; e < s.length; e++) n = 0 === e ? s[e](...t) : s[e](n);
+            return n;
         }
     };
-}();
-//# sourceMappingURL=event-emitter.js.map
+}));
+//# sourceMappingURL=event-emitter.umd.js.map

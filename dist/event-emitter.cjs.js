@@ -1,4 +1,6 @@
-export default class {
+"use strict";
+
+module.exports = class {
     /**
      * Event list
      */
@@ -80,5 +82,5 @@ export default class {
         for (let e = 0; e < t.length; e++) r = 0 === e ? t[e](...s) : t[e](r);
         return r;
     }
-}
-//# sourceMappingURL=event-emitter.es.js.map
+};
+//# sourceMappingURL=event-emitter.cjs.js.map
